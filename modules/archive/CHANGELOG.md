@@ -1,115 +1,151 @@
-## 2015-08-21 - Release 0.8.1
+##2016/07/13 - Releasing 1.0.0
 
-Use docker for acceptance tests
+* GH-176 Add Compatiblity layer for camptocamp/archive
+* GH-174 Add allow_insecure parameter
+* Numerous Rubocop and other modulesync changes
+* Drop support for ruby 1.8
 
-## 2015-06-29 - Release 0.8.0
+##2016/03/18 - Releasing 0.5.1
 
-allow to specify a user for the archive extraction and the archive download
+* GH-146 Set aws_cli_install default to false
+* GH-142 Fix wget cookie options
+* GH-114 Document extract customization options
+* open file in binary mode when writing files for windows download
 
-## 2015-06-26 - Release 0.7.5
+##2016/03/10 - Releasing 0.5.0
 
-Fix strict_variables activation with rspec-puppet 2.2
+Release 0.5.x contains significant changes:
 
-## 2015-05-28 - Release 0.7.4
+* faraday, faraday_middleware no longer required.
+* ruby provider is the default for windows (using net::http).
+* archive gem_provider attribute deprecated.
+* archive::artifactory server, port, url_path attributes deprecated.
+* S3 bucket support (experimental).
 
-Add beaker_spec_helper to Gemfile
+* GH-55 use net::http to stream files
+* Add additional documentation
+* Simplify duplicate code in download/content methods
+* Pin rake to avoid rubocop/rake 11 incompatibility
+* Surface "checksum_verify" parameter in archive::nexus
+* GH-48 S3 bucket support
 
-## 2015-05-26 - Release 0.7.3
+##2016/3/2 - Releasing 0.4.8
 
-Use random application order in nodeset
+* VoxPupuli Release
+* modulesync to fix forge release issues.
+* cosmetic changes due to rubocop update.
 
-## 2015-05-26 - Release 0.7.2
+##2016/3/1 - Releasing 0.4.7
 
-add utopic & vivid nodesets
+* VoxPupuli Release
+* raise exception when error occurs during extraction.
 
-## 2015-05-25 - Release 0.7.1
+##2016/2/26 - Releasing 0.4.6
 
-Don't allow failure on Puppet 4
+* VoxPupuli Release
 
-## 2015-05-18 - Release 0.7.0
+##2016/2/26 - Releasing 0.4.5
 
-Support tar.xz format
+* Puppet-community release
+* Update travis/forge badge location
+* Fix aio-agent detection
+* Support .gz .xz format
+* Fix local files for non faraday providers
+* Fix GH-77 allows local files to be specified without using file:///
+* Fix GH-78 allow local file:///c:/... on windows
+* Fix phantom v0.4.4 release.
 
-## 2015-05-13 - Release 0.6.2
+##2015/12/2 - Releasing 0.4.4
 
-Add puppet-lint-file_source_rights-check gem
+* Puppet-community release
+* Ignore files properly for functional release
+* Add authentication to archive::nexus
+* Create directory before transfering file
+* Refactor file download code
+* Create and use fact for archive_windir
+* Cleanup old testing code
 
-## 2015-05-12 - Release 0.6.1
+##2015/11/25 - Releasing 0.4.3
 
-Don't pin beaker
+* Puppet-community release
 
-## 2015-05-12 - Release 0.6.0
+##2015/11/25 - Releasing 0.4.1
 
-Support the purging of target directories
+* Automate release :)
 
-## 2015-04-27 - Release 0.5.3
+##2015/11/25 - Releasing 0.4.0
 
-Add nodeset ubuntu-12.04-x86_64-openstack
+* Migrate Module to Puppet-Community
+* Make everything Rubocop Clean
+* Make everything lint clean
+* Various fixes concerning Jar handling
+* Support for wget
+* Spec Tests for curl
+* Support for bzip
+* More robust handling of sha512 checksums
 
-## 2015-04-17 - Release 0.5.2
+##2015/4/23 - 0.3.0
 
-Add beaker nodesets
+Release 0.3.x contains breaking changes
 
-## 2015-04-03 - Release 0.5.1
+* The parameter 7zip have been changed to seven_zip to conform to Puppet 4.x variable name requirements.
+* The namevar name have been changed to path to allow files with the same filename to exists in different filepath.
+* This project have been migrated to [voxpupuli](https://github.com/voxpupuli/puppet-archive), please adjust your repo git source.
 
-Confine rspec pinning to ruby 1.8
-Fix when not using digest_url
+* Fix Puppet 4 compatability issues
+* Fix archive namevar to use path
 
-## 2015-03-24 - Release 0.5.0
+##2015/3/5 - 0.2.2
 
-Add a proxy_server parameter
+* add FTP and File support
 
-## 2015-03-24 - Release 0.4.1
+##2015/2/26 - 0.2.1
 
-Add unit tests
+* fix ruby 1.8.7 syntax error
 
-## 2015-03-06 - Release 0.4.0
+##2015/2/23 - 0.2.0
 
-Add --strip-components support
+* fix custom flags options
+* add msi installation option for 7zip
+* add support for configuring extract command user/group
+* use temporary filepath for download
 
-## 2015-01-07 - Release 0.3.6
+##2014/12/08 - 0.1.8
 
-Fix unquoted strings in cases
+* Update documentation
+* puppet-lint, metadata.json cleanup
 
-## 2015-01-05 - Release 0.3.5
+##2014/11/13 - 0.1.7
 
-Simplify bundler cache in Travis CI
-Fix license name in metadata.json
+* Fix Puppet Enterprise detection
+* Fix checksum length restriction
+* Add puppetlabs stdlib/pe_gem dependency
+* Add spec testing
 
-## 2014-11-18 Release 0.3.2
+##2014/11/05 - 0.1.6
 
-Linting metadata
+* Fix Windows SSL authentication issues
 
-## 2014-11-04 Release 0.3.1
+##2014/11/04 - 0.1.5
 
-Fix missing comma
+* Add cookie support
 
-## 2014-11-04 Release 0.3.0
+##2014/10/03 - 0.1.4
 
-Add path to execs
+* Fix file overwrite and re-extract
 
-## 2014-11-04 Release 0.2.1
+##2014/10/03 - 0.1.3
 
-Drop Puppet 2.7 support
+* Fix windows x86 path bug
 
-## 2014-10-20 Release 0.2.0
+##2014/10/02 - 0.1.2
 
-Setup automatic Forge releases
+* Fix autorequire and installation of dependencies
 
-## 2014-09-24 Release 0.1.3
+##2014/10/01 - 0.1.1
 
-Bug fix
+* Add windows extraction support via 7zip
 
-## 2014-09-23 Release 0.1.2
+##2014/9/26 - 0.1.0
 
-Quote url to get the data from
-
-## 2014-09-05 Release 0.1.1
-
-Allow disabling of no-checksum notices in puppetmaster logs
-
-## 2014-07-02 Release 0.1.0
-
-Make curl silent, #21
-Add documentation
-Fix strict variables
+* Initial Release

@@ -123,8 +123,12 @@ define java::oracle (
             $package_type = 'rpm'
           }
         }
+       'Debian', 'Ubuntu': {
+          $package_type = 'targz'
+	}
         default : {
-          fail ("unsupported platform ${::operatingsystem}") }
+		fail ("unsupported platform ${::operatingsystem}")
+	 }
       }
 
       $os = 'linux'
@@ -139,6 +143,7 @@ define java::oracle (
   case $::architecture {
     'i386' : { $arch = 'i586' }
     'x86_64' : { $arch = 'x64' }
+    'amd64' : { $arch = 'x64' } 
     default : {
       fail ("unsupported platform ${::architecture}")
     }
@@ -152,8 +157,8 @@ define java::oracle (
   # http://download.oracle.com/otn/java/jdk/6u45-b06/jdk-6u45-linux-i586.bin
   # package name to download from Oracle's website
   case $package_type {
-    'bin' : {
-      $package_name = "${java_se}-${release_major}-${os}-${arch}.bin"
+    'targz' : {
+      $package_name = "${java_se}-${release_major}-${os}-${arch}.tar.gz"
     }
     'rpmbin' : {
       $package_name = "${java_se}-${release_major}-${os}-${arch}-rpm.bin"
@@ -171,8 +176,8 @@ define java::oracle (
   notice ("Destination is ${destination}")
 
   case $package_type {
-    'bin' : {
-      $install_command = "sh ${destination}"
+    'targz' : {
+      $install_command = "tar -zxf ${destination} -C /usr/java/"
     }
     'rpmbin' : {
       $install_command = "sh ${destination} -x; rpm --force -iv sun*.rpm; rpm --force -iv ${java_se}*.rpm"

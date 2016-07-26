@@ -2,10 +2,10 @@ class gerrit (
   $source                   = "/opt/gerrit/gerrit-2.8.1.war",
   $target                   = '/opt/gerrit', 
   $auth_type                = 'OPENID',
-  $canonicalweburl          = 'http://127.0.0.1:8080/',
+  $canonicalweburl          = 'http://127.0.0.1:8090/',
   $httpd_protocol           = 'http',
   $httpd_hostname           = '*',
-  $httpd_port               = 8080,
+  $httpd_port               = 8090,
   $configure_gitweb         = true,
   $database_backend         = 'h2',
   $database_name            = 'db/ReviewDB',
@@ -35,12 +35,12 @@ class gerrit (
     } -> Exec ['install_gerrit']
   }
 
-  if $install_java {
-    package{
-      $java_package:
-        ensure => installed,
-    } -> Exec ['install_gerrit']
-  }
+#  if $install_java {
+#    package{
+#      $java_package:
+#        ensure => installed,
+#    } -> Exec ['install_gerrit']
+#  }
 
   if $install_git {
     package{
@@ -59,7 +59,7 @@ class gerrit (
   
   exec {
     'install_gerrit':
-      command => "java -jar ${source} init -d ${target}",
+      command => "java -jar ${source} init --batch  -d ${target}",
       creates => "${target}/bin/gerrit.sh",
       user    => $user,
       path    => $::path,
@@ -68,7 +68,7 @@ class gerrit (
 
   exec {
     'reload_gerrit':
-     command     => "/opt/gerrit/bin/gerrit.sh stop && java -jar ${source} init -d ${target}",
+     command     => "/opt/gerrit/bin/gerrit.sh stop && java -jar ${source} init --batch  -d ${target}",
       refreshonly => true,
       user        => $user,
       path        => $::path,
