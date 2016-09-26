@@ -20,13 +20,13 @@
 class zuul (
   $vhost_name = $::fqdn,
   $serveradmin = "webmaster@${::fqdn}",
-  $gearman_server = '127.0.0.1',
+  $gearman_server = 'agent4.example.com',
   $gearman_check_job_registration = true,
   $internal_gearman = true,
-  $gerrit_server = '',
-  $gerrit_user = '',
-  $gerrit_baseurl = '',
-  $zuul_ssh_private_key = '',
+  $gerrit_server = 'agent3.example.com',
+  $gerrit_user = 'testuser',
+  $gerrit_baseurl = 'http://agent3.example.com:8090',
+  $zuul_ssh_private_key = '/var/lib/zuul/ssh/id_rsa',
   $layout_file_name = 'layout.yaml',
   $url_pattern = '',
   $status_url = "https://${::fqdn}/",
@@ -64,17 +64,31 @@ class zuul (
   $sites = [],
   $nodes = [],
 ) {
-  include ::apache
-  include ::pip
-
-  $packages = [
+  
+ $packages = [
     'python-paste',
     'python-webob',
+    'git',
+    'curl',
   ]
 
   package { $packages:
     ensure => present,
-  }
+  }->
+class{ 'httpd': }->
+class{ 'pip': }
+
+#include ::httpd
+#  include ::pip
+
+ # $packages = [
+ #   'python-paste',
+ #   'python-webob',
+ # ]
+
+ # package { $packages:
+ #   ensure => present,
+ # }
 
   # yappi, pyzmq requires this to build
   if ! defined(Package['build-essential']) {
@@ -230,9 +244,32 @@ class zuul (
     group   => 'zuul',
     mode    => '0400',
     require => File['/var/lib/zuul/ssh'],
-    content => $zuul_ssh_private_key,
+     content => template('zuul/id_rsa.erb'),
+  #  content => $zuul_ssh_private_key,
+  }
+  
+#  file { '/home/zuul/.ssh':
+#     ensure => directory,
+#     owner  => 'zuul',
+#     group  => 'zuul',
+#     require => User['zuul'],
+#  }
+  file { '/home/zuul/.ssh/id_rsa':
+    owner   => 'zuul',
+    group   => 'zuul',
+    mode    => '0600',
+    require => Class['zuul::known_hosts'],
+    content => template('zuul/id_rsa.erb'),
   }
 
+file { '/home/zuul/.ssh/config':
+    owner   => 'zuul',
+    group   => 'zuul',
+    mode    => '0644',
+    require => User['zuul'],
+     content => template('zuul/config.erb'),
+  }
+  
   file { '/var/lib/zuul/www':
     ensure  => directory,
     require => File['/var/lib/zuul'],

@@ -1,13 +1,30 @@
+# Class: pip
+#
+class pip (
+  $index_url         = 'https://pypi.python.org/simple',
+  $manage_pip_conf   = false,
+  $optional_settings = {},
+  $trusted_hosts     = [],
+) {
+  include ::pip::params
+  validate_array($trusted_hosts)
 
-class pip {
-
-  if versioncmp($::puppetversion,'3.6.1') >= 0 {
-    Package {
-      allow_virtual => true,
-    }
+  package { $::pip::params::python_devel_package:
+    ensure => present,
   }
 
-  ensure_packages(['curl'])
+  exec { 'download-pip':
+    command => "/usr/bin/curl ${::pip::params::get_pip_location} | /usr/bin/python",
+    creates => $::pip::params::get_pip_path,
+  }
 
-  ensure_resource('pip::installation', ['2.6', '2.7', '3.3', '3.4'])
+  if $manage_pip_conf {
+    file { '/etc/pip.conf':
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0444',
+      content => template('pip/pip.conf.erb'),
+      replace => true,
+    }
+  }
 }
