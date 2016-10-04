@@ -1,4 +1,4 @@
-class zuul::params (
+class zuul::configs (
 $project_name = '',
 $job1_name = '',
 $job2_name = '',
@@ -10,6 +10,8 @@ $jenkins_password = '',
 $node = '',
 $zuul_cloner_url = '',
 $git_push_url = '',
+$gerrit_usename = '',
+$gerrit_password = '',
 )  {
 
 file { ['/etc/jenkins_jobs/','/etc/jenkins_jobs/jobs/']:
